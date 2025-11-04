@@ -1,16 +1,9 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import "primereact/resources/themes/viva-dark/theme.css";
+import "primeicons/primeicons.css";
+import type { Metadata } from "next";
+import { PrimeReactProvider, APIOptions } from "primereact/api";
+import AppSidebar from './_layout/sidebar/sidebar';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,13 +15,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const value: APIOptions = {
+    appendTo: "self",
+  };
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <PrimeReactProvider value={value}>
+        <body className='h-screen w-screen flex flex-col gap-2'>
+          <header>
+            <AppSidebar />
+          </header>
+          <main className='flex-1'>
+            {children}
+          </main>
+        </body>
+      </PrimeReactProvider>
     </html>
   );
 }
