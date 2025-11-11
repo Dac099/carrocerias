@@ -48,29 +48,6 @@ export const clientTable = pgTable(
   })
 );
 
-export const userTable = pgTable(
-  "user",
-  {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    name: varchar({ length: 100 }).notNull(),
-    email: varchar({ length: 100 }).unique().notNull(),
-    password: varchar({ length: 100 }).notNull(),
-    role: userRoleEnum().default("client"),
-    createdAt: timestamp("created_at", {
-      withTimezone: true,
-      mode: "date",
-    }).defaultNow(),
-    updatedAt: timestamp("updated_at", {
-      withTimezone: true,
-      mode: "date",
-    }).defaultNow(),
-  },
-  (table) => ({
-    idIdx: index("user_id_idx").on(table.id),
-    emailIdx: index("user_email_idx").on(table.email),
-  })
-);
-
 export const supplierTable = pgTable(
   "supplier",
   {
