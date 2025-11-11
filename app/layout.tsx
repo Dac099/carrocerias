@@ -3,7 +3,8 @@ import "primereact/resources/themes/viva-dark/theme.css";
 import "primeicons/primeicons.css";
 import type { Metadata } from "next";
 import { PrimeReactProvider, APIOptions } from "primereact/api";
-import AppSidebar from './_layout/sidebar/sidebar';
+import AppSidebar from "./_layout/sidebar/sidebar";
+import QueryProvider from '@/provider/queryProvider';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,12 +23,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <PrimeReactProvider value={value}>
-        <body className='h-screen w-screen flex flex-col gap-2'>
+        <body className="h-screen w-screen flex flex-col gap-2">
           <header>
             <AppSidebar />
           </header>
-          <main className='flex-1'>
-            {children}
+          <main className="flex-1">
+            <QueryProvider>
+              {children}
+            </QueryProvider>
           </main>
         </body>
       </PrimeReactProvider>
