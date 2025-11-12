@@ -23,7 +23,7 @@ export type BodytruckDto = {
   description: string;
   quantity: number;
   price: number;
-  widtth: number;
+  width: number;
   height: number;
   length: number;
 };

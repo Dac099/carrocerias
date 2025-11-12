@@ -23,3 +23,32 @@ export async function getClients() {
     );
   }
 }
+
+export async function fetchItems() {
+  try {
+    const { bodytruckTable, serviceTable } = schemas;
+    const bodytrucks = await db
+      .select({
+        id: bodytruckTable.id,
+        name: bodytruckTable.name,
+        description: bodytruckTable.description,
+      })
+      .from(bodytruckTable);
+    const services = await db
+      .select({
+        id: serviceTable.id,
+        name: serviceTable.name,
+        description: serviceTable.description,
+      })
+      .from(serviceTable);
+
+      return [ bodytrucks, services ];
+  } catch (error) {
+    throw new FetchError(
+      500,
+      "Error fetching items",
+      "No se pudieron obtener los items",
+      error as Error
+    );
+  }
+}

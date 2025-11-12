@@ -3,8 +3,14 @@ import { Stepper } from "primereact/stepper";
 import { StepperPanel } from "primereact/stepperpanel";
 import { useRef, useState } from "react";
 import { Button } from "primereact/button";
-import { QuoteFormDto, ClientDto } from "@/shared/dto/quoteform";
-import ClientForm from './_components/clientForm';
+import {
+  QuoteFormDto,
+  ClientDto,
+  BodytruckDto,
+  ServiceDto,
+} from "@/shared/dto/quoteform";
+import ClientForm from "./_components/clientForm";
+import ProductsForm from "./_components/productsForm";
 
 export default function Page() {
   //Hooks
@@ -14,6 +20,13 @@ export default function Page() {
   //Handlers and functions
   function setFormClientData(clientData: ClientDto) {
     setFormData({ ...formData, client: clientData });
+  }
+
+  function setFormItemsData(
+    bodytrucks: BodytruckDto[],
+    services: ServiceDto[]
+  ) {
+    setFormData({ ...formData, items: { bodytrucks, services } });
   }
 
   const nextStep = () => stepperRef.current?.nextCallback();
@@ -27,27 +40,18 @@ export default function Page() {
         className="max-w-5xl mx-auto"
       >
         <StepperPanel header="Cliente">
-          <ClientForm 
+          <ClientForm
             nextStep={nextStep}
             setClientFormData={setFormClientData}
           />
         </StepperPanel>
 
         <StepperPanel header="Productos">
-          <section></section>
-          <section className="flex justify-end px-2 gap-3">
-            <Button
-              icon="pi pi-arrow-left"
-              onClick={prevStep}
-              className="h-10"
-            />
-
-            <Button
-              icon="pi pi-arrow-right"
-              onClick={nextStep}
-              className="h-10"
-            />
-          </section>
+          <ProductsForm
+            prevStep={prevStep}
+            nextStep={nextStep}
+            setFormData={setFormItemsData}
+          />
         </StepperPanel>
 
         <StepperPanel header="Notas para el cliente">
