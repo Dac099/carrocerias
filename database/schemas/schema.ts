@@ -38,14 +38,14 @@ export const clientTable = pgTable(
       mode: "date",
     }).defaultNow(),
   },
-  (table) => ({
-    idIdx: index("client_id_idx").on(table.id),
-    emailIdx: index("client_email_idx").on(table.email),
-    minimum_contact_data: check(
+  (table) => [
+    index("client_id_idx").on(table.id),
+    index("client_email_idx").on(table.email),
+    check(
       "minimum_contact_data",
       sql`${table.phone} IS NOT NULL OR ${table.email} IS NOT NULL`
     ),
-  })
+  ]
 );
 
 export const supplierTable = pgTable(
@@ -65,13 +65,13 @@ export const supplierTable = pgTable(
       mode: "date",
     }).defaultNow(),
   },
-  (table) => ({
-    idIdx: index("supplier_id_idx").on(table.id),
-    minimum_contact_data: check(
+  (table) => [
+    index("supplier_id_idx").on(table.id),
+    check(
       "minimum_contact_data",
       sql`${table.phone} IS NOT NULL OR ${table.email} IS NOT NULL`
     ),
-  })
+  ]
 );
 
 export const serviceTable = pgTable(
@@ -89,9 +89,7 @@ export const serviceTable = pgTable(
       mode: "date",
     }).defaultNow(),
   },
-  (table) => ({
-    idIdx: index("service_id_idx").on(table.id),
-  })
+  (table) => [index("service_id_idx").on(table.id)]
 );
 
 export const bodytruckTable = pgTable(
@@ -110,9 +108,7 @@ export const bodytruckTable = pgTable(
       mode: "date",
     }).defaultNow(),
   },
-  (table) => ({
-    idIdx: index("bodytruck_id_idx").on(table.id),
-  })
+  (table) => [index("bodytruck_id_idx").on(table.id)]
 );
 
 export const quoteTable = pgTable(
@@ -133,10 +129,10 @@ export const quoteTable = pgTable(
     clientNotes: text("client_notes"),
     internalNotes: text("internal_notes"),
   },
-  (table) => ({
-    idIdx: index("quote_id_idx").on(table.id),
-    statusIdx: index("quote_status_idx").on(table.status),
-  })
+  (table) => [
+    index("quote_id_idx").on(table.id),
+    index("quote_status_idx").on(table.status),
+  ]
 );
 
 export const quoteBodytruck = pgTable(
@@ -160,9 +156,7 @@ export const quoteBodytruck = pgTable(
     }).defaultNow(),
     estimatedDeliveryDays: smallint("estimated_delivery_days").notNull(),
   },
-  (table) => ({
-    idIdx: index("quote_bodytruck_id_idx").on(table.id),
-  })
+  (table) => [index("quote_bodytruck_id_idx").on(table.id)]
 );
 
 export const quoteService = pgTable(
@@ -182,9 +176,7 @@ export const quoteService = pgTable(
       mode: "date",
     }).defaultNow(),
   },
-  (table) => ({
-    idIdx: index("quote_service_id_idx").on(table.id),
-  })
+  (table) => [index("quote_service_id_idx").on(table.id)]
 );
 
 export const quoteRelations = relations(quoteTable, ({ one, many }) => ({
