@@ -2,6 +2,7 @@
 import { db } from "@/database";
 import * as schemas from "@/database/schemas/schema";
 import { FetchError } from "@/shared/classes/fetchError";
+import { like, or } from "drizzle-orm";
 
 export async function getClients() {
   try {
@@ -24,7 +25,7 @@ export async function getClients() {
   }
 }
 
-export async function fetchItems() {
+export async function fetchItems(filter: string) {
   try {
     const { bodytruckTable, serviceTable } = schemas;
     const bodytrucks = await db
@@ -42,7 +43,7 @@ export async function fetchItems() {
       })
       .from(serviceTable);
 
-      return [ bodytrucks, services ];
+    return [bodytrucks, services];
   } catch (error) {
     throw new FetchError(
       500,

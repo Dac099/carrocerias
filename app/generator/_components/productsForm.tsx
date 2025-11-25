@@ -19,38 +19,20 @@ export default function ProductsForm({
   nextStep,
   setFormData,
 }: Props) {
-  const [selectedBodyTruck, setSelectedBodyTruck] =
-    useState<Partial<BodytruckDto> | null>(null);
-  const [selectedService, setSelectedService] =
-    useState<Partial<ServiceDto> | null>(null);
+  const [bodytrucks, setBodytrucks] = useState<BodytruckDto[]>([]);
+  const [services, setServices] = useState<ServiceDto[]>([]);
   const [dialogTarget, setDialogTarget] = useState<
     "bodytruck" | "service" | null
   >(null);
+
   const result = useQuery({
     queryKey: ["productsAnsServices"],
     queryFn: fetchItems,
   });
 
-  function getBodyTruckOptions() {
-    if (!result.data) return [];
-
-    return result.data[0].map((bt) => ({
-      label: bt.name,
-      value: bt,
-    }));
-  }
-
   return (
     <>
       <section className="p-2">
-        {/* <Dropdown 
-          placeholder='Carrocería'
-          className='w-full sm:w-1/2'
-          options={getBodyTruckOptions()}
-          value={selectedBodyTruck}
-          onChange={(e) => setSelectedBodyTruck(e.value)}
-          disabled={result.isPending || result.isError || result.data?.[0].length === 0}
-        /> */}
         <div className="w-full flex items-center gap-2 mb-3">
           <Button
             icon="pi pi-truck"
@@ -66,11 +48,13 @@ export default function ProductsForm({
           />
         </div>
       </section>
+
       <section className="flex justify-end p-2 gap-3">
         <Button icon="pi pi-arrow-left" onClick={prevStep} className="h-10" />
 
         <Button icon="pi pi-arrow-right" onClick={nextStep} className="h-10" />
       </section>
+
       <Dialog
         visible={dialogTarget !== null}
         onHide={() => setDialogTarget(null)}
@@ -84,7 +68,7 @@ export default function ProductsForm({
         draggable={false}
         className='w-11/12'
       >
-        {dialogTarget === 'bodytruck' && <BodytruckForm />}
+        {dialogTarget === 'bodytruck' && <BodytruckForm bodytrucks={result.data?.[0] || []} />}
         {dialogTarget === 'service' && <ServiceForm />}
       </Dialog>
     </>
