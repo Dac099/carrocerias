@@ -1,7 +1,6 @@
 import { Button } from "primereact/button";
 import { useQuery } from "@tanstack/react-query";
 import { fetchItems } from "../actions";
-import { Dropdown } from "primereact/dropdown";
 import { useState } from "react";
 import { BodytruckDto, ServiceDto } from "@/shared/dto/quoteform";
 import { Dialog } from "primereact/dialog";
@@ -19,8 +18,8 @@ export default function ProductsForm({
   nextStep,
   setFormData,
 }: Props) {
-  const [bodytrucks, setBodytrucks] = useState<BodytruckDto[]>([]);
-  const [services, setServices] = useState<ServiceDto[]>([]);
+  const [bodytrucks, setBodytrucks] = useState<BodytruckDto[]>([]); // Bodytrucks to insert in the quote
+  const [services, setServices] = useState<ServiceDto[]>([]); // Services to insert in the quote
   const [dialogTarget, setDialogTarget] = useState<
     "bodytruck" | "service" | null
   >(null);
@@ -29,6 +28,16 @@ export default function ProductsForm({
     queryKey: ["productsAnsServices"],
     queryFn: fetchItems,
   });
+
+  const handleAddBodyTruck = (bodytruck: BodytruckDto) => {
+    setBodytrucks([...bodytrucks, bodytruck]);
+    setDialogTarget(null);
+  };
+
+  const handleAddService = (service: ServiceDto) => {
+    setServices([...services, service]);
+    setDialogTarget(null);
+  };
 
   return (
     <>
@@ -68,7 +77,12 @@ export default function ProductsForm({
         draggable={false}
         className='w-11/12'
       >
-        {dialogTarget === 'bodytruck' && <BodytruckForm bodytrucks={result.data?.[0] || []} />}
+        {dialogTarget === 'bodytruck' &&
+          <BodytruckForm
+            bodytrucks={result.data?.bodytrucks || []}
+            handleAddBodyTruck={handleAddBodyTruck}
+          />
+        }
         {dialogTarget === 'service' && <ServiceForm />}
       </Dialog>
     </>

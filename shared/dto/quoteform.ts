@@ -1,7 +1,7 @@
 export type QuoteFormDto = {
   client: ClientDto,
   items: ItemsDto,
-  notes: {internal: string; forClient: string;},
+  notes: { internal: string; forClient: string; },
 };
 
 export type ClientDto = {
@@ -18,7 +18,7 @@ export type ItemsDto = {
 };
 
 export type BodytruckDto = {
-  id?: number;
+  id: number;
   name: string;
   description: string;
   quantity: number;
@@ -26,10 +26,11 @@ export type BodytruckDto = {
   width: number;
   height: number;
   length: number;
+  mediaUrl: string | null;
 };
 
 export type ServiceDto = {
-  id?: number;
+  id: number;
   name: string;
   description: string;
   estimatedTimeDays: number;

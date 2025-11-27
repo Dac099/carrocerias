@@ -25,7 +25,7 @@ export async function getClients() {
   }
 }
 
-export async function fetchItems(filter: string) {
+export async function fetchItems() {
   try {
     const { bodytruckTable, serviceTable } = schemas;
     const bodytrucks = await db
@@ -33,6 +33,7 @@ export async function fetchItems(filter: string) {
         id: bodytruckTable.id,
         name: bodytruckTable.name,
         description: bodytruckTable.description,
+        mediaUrl: bodytruckTable.mediaUrl
       })
       .from(bodytruckTable);
     const services = await db
@@ -43,7 +44,10 @@ export async function fetchItems(filter: string) {
       })
       .from(serviceTable);
 
-    return [bodytrucks, services];
+    return {
+      bodytrucks,
+      services,
+    };
   } catch (error) {
     throw new FetchError(
       500,
